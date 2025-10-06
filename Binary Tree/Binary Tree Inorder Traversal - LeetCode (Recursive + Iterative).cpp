@@ -6,6 +6,7 @@ void getAllLeft(stack<TreeNode*>& st, TreeNode* node) {
 }
 
 void iterativeInorder(TreeNode* root) {
+  if(root == NULL) return;
   stack<TreeNode*> st;
   getAllLeft(st, root);
 
