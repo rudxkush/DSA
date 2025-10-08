@@ -14,3 +14,28 @@ class Solution {
         return minimumDiff;
     }
 };
+
+class anotherSolution {
+public:
+    int minimumDiff = INT_MAX;
+
+    int helper(Node *root, int k) {
+        if (root == NULL) {
+            return INT_MAX;
+        }
+
+        int closestVal = abs(k - root->data);
+
+        int left = helper(root->left, k);
+        int right = helper(root->right, k);
+
+        minimumDiff = min({minimumDiff, closestVal, left, right});
+
+        return closestVal; 
+    }
+
+    int minDiff(Node *root, int K) {
+        helper(root, K);
+        return minimumDiff;
+    }
+};
