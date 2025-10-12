@@ -3,14 +3,16 @@ public:
     int minSubArrayLen(int target, vector<int>& nums) {
         int l = 0, r = 0, n = nums.size(), minLength = INT_MAX;
         int sum = 0;
-        while (r < n) {
-            sum += nums[r];
-            while (sum >= target) {
-                minLength = min(minLength, r - l + 1);
+        while (l < n) {
+            if(sum < target) {
+                if (r == n) break;
+                sum += nums[r];
+                r++;
+            } else {
+                minLength = min(r - l, minLength);
                 sum -= nums[l];
                 l++;
             }
-            r++;
         }
         return minLength == INT_MAX ? 0 : minLength;
     }
