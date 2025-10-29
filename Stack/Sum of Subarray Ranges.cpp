@@ -1,3 +1,6 @@
+/*
+    Author: rudxkush
+*/
 class Solution {
 public:
     vector<int> nearestSmallestOrEqualElementOnLeft(vector<int>& arr) {
