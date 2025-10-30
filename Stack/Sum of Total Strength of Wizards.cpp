@@ -19,7 +19,7 @@ public:
         pprefix.assign(n + 1, 0);
 
         for (int i = 0; i < n; i++) {
-            prefix[i + 1] = (prefix[i] + strength[i]) % mod;          // standard prefix sum
+            prefix[i + 1] = (prefix[i] + strength[i]) % mod;          // prefix sum
             pprefix[i + 1] = (pprefix[i] + prefix[i + 1]) % mod;      // prefix of prefix
         }
     }
@@ -101,8 +101,6 @@ int main() {
         - [3,1,2] from [1,3,1,2] has a total strength of min([3,1,2]) * sum([3,1,2]) = 1 * 6 = 6
         - [1,3,1,2] from [1,3,1,2] has a total strength of min([1,3,1,2]) * sum([1,3,1,2]) = 1 * 7 = 7
         The sum of all the total strengths is 1 + 9 + 1 + 4 + 4 + 4 + 3 + 5 + 6 + 7 = 44.
-
-        Intuition: prefixSu for getting the sum and knowing the start and end of every minimum via stacks.
      */
     vector<int> strength = {1,3,1,2};
     Solution obj;
