@@ -42,3 +42,12 @@ public:
         return maxPossible;
     }
 };
+/*
+        Similar questions you should practice to build intuition around this type of problem:
+        Find All Lonely Numbers in the Array
+        Longest Nice Subarray
+        Apply Operations to Maximize Frequency Score
+        Maximum Frequency of an Element After Performing Operations I
+        Maximum Frequency of an Element After Performing Operations II
+        Maximum Difference Between Even and Odd Frequency II
+*/
