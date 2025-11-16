@@ -1,35 +1,32 @@
-/*
-    Author : rudxkush
-*/
-string multiplyStringByInt(const string &num, int x) {
-    int carry = 0;
-    string result = "";
-
-    // multiply from right to left
-    for (int i = num.size() - 1; i >= 0; i--) {
-        int digit = num[i] - '0';
-        int prod = digit * x + carry;
-        result += char((prod % 10) + '0');
-        carry = prod / 10;
+string multiplyStringByInt(string &intermediate, int x) {
+    int carry  = 0;
+    int n = (int) intermediate.size();
+    string ans = "";
+    
+    for(int i = n - 1; i >= 0; --i) {
+        int number = intermediate[i] - '0';
+        int product = x * number;
+        int carry_product_sum = product + carry;
+        ans.push_back((carry_product_sum % 10) + '0');
+        carry = carry_product_sum / 10;
     }
-
-    // leftover carry
-    while (carry) {
-        result += char((carry % 10) + '0');
+    
+    while(carry) {
+        ans.push_back((carry % 10) + '0');
         carry /= 10;
     }
-
-    reverse(result.begin(), result.end());
-    return result;
+    
+    reverse(ans.begin(), ans.end());
+    return ans;
 }
 
 string Solution::solve(int A) {
-    string result = "1";
+    string factorial = "1";
     while(A > 1){
-        result = multiplyStringByInt(result, A);
+        factorial = multiplyStringByInt(factorial, A);
         A = A - 1;
     }
-    // long long product = 1; // overflows after 20 or 21
+    // long long product = 1;   // <---- overflows ll after 20!
     // while(A > 1) {
     //     product *= A;
     //     A = A - 1; 
@@ -42,5 +39,5 @@ string Solution::solve(int A) {
     // }
     // reverse(ans.begin(), ans.end());
     // return ans;
-    return result;
+    return factorial;
 }
