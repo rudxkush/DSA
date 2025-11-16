@@ -1,3 +1,6 @@
+/*
+    Author : rudxkush
+*/
 string multiplyStringByInt(const string &num, int x) {
     int carry = 0;
     string result = "";
