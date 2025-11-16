@@ -1,3 +1,6 @@
+/*
+    Author : rudxkush
+*/
 vector<int> Solution::maxset(vector<int> &A) {
     int n = (int) A.size();
 
