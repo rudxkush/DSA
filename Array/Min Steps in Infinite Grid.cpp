@@ -1,3 +1,6 @@
+/*
+    Author : rudxkush
+*/
 int Solution::coverPoints(vector<int> &A, vector<int> &B) {
     int n = (int) A.size();
     int minSteps = 0;
