@@ -1,3 +1,6 @@
+/*
+    Author : rudxkush
+*/
 int Solution::solve(vector<int> &A, int B) {
     int n = (int) A.size();
     int i = 0;
