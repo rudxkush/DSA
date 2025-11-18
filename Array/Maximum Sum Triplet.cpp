@@ -1,3 +1,6 @@
+/*
+    Author : rudxkush
+*/
 int Solution::solve(vector<int> &A) {
     int n = (int) A.size();
     if(n < 3) return 0;
