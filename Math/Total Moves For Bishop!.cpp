@@ -1,3 +1,6 @@
+/*
+    Author : rudxkush
+*/
 int Solution::solve(int A, int B) {
     // Count top left squares
     int topLeft = min(A, B) - 1;
