@@ -1,76 +1,65 @@
 /*
   Author: rudxkush
 */
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm> // for min
+#include <climits>   // for INT_MAX
 using namespace std;
-
-class SegmentTree {
+class Solution {
 public:
-    vector<int> seg, ar;
-    int n;
-
-    SegmentTree(vector<int>& nums) {
-        ar = nums;
-        n = (int)nums.size();
-        seg.assign(4 * n, INT_MAX);
-        build(0, 0, n - 1);
-    }
-
-    void build(int idx, int l, int r) {
-        if (l == r) {
-            seg[idx] = ar[l];
-            return;
+    void buildSegmentTree(vector<int>& nums, vector<int>& segmentTree, int low, int high, int position) {
+        if (low > high) {
+            return ;
         }
-        int mid = (l + r) / 2;
-        build(2 * idx + 1, l, mid);
-        build(2 * idx + 2, mid + 1, r);
-        seg[idx] = min(seg[2 * idx + 1], seg[2 * idx + 2]);
-    }
-
-    void pointUpdate(int i, int val) {
-        int diff = val - ar[i];
-        ar[i] = val;
-        pointUpdateUtil(0, 0, n - 1, i, diff);
-    }
-
-    void pointUpdateUtil(int idx, int l, int r, int i, int diff) {
-        if (i < l || i > r) return;
-        if (l == r) {
-            seg[idx] += diff;
-            return;
+        if (low == high) {
+            segmentTree[position] = nums[low];
+            return ;
         }
-        int mid = (l + r) / 2;
-        pointUpdateUtil(2 * idx + 1, l, mid, i, diff);
-        pointUpdateUtil(2 * idx + 2, mid + 1, r, i, diff);
-        seg[idx] = min(seg[2 * idx + 1], seg[2 * idx + 2]);
-    }
+        int mid = low + (high - low) / 2;
+        buildSegmentTree(nums, segmentTree, low, mid, 2*position + 1); // left subtree
+        buildSegmentTree(nums, segmentTree, mid + 1, high, 2*position + 2); // right subtree
 
-    void rangeUpdate(int ql, int qr, int delta) {
-        for (int i = ql; i <= qr; i++) ar[i] += delta;
-        rangeUpdateUtil(0, 0, n - 1, ql, qr, delta);
+        segmentTree[position] = min(segmentTree[2*position + 1], segmentTree[2*position + 2]); // parent = min(leftChild, rightChild)
     }
-
-    void rangeUpdateUtil(int idx, int l, int r, int ql, int qr, int delta) {
-        if (r < ql || l > qr) return;
-        if (l == r) {
-            seg[idx] += delta;
-            return;
+    int rangeMinQuery(vector<int>& segmentTree, int qlow, int qhigh, int low, int high, int position) {
+        // Either we would have a partial overlap
+        // (or) we would have a total overlap
+        // (or) we would have a no overlap
+        if(qlow <= low && qhigh >= high){
+            return segmentTree[position];
         }
-        int mid = (l + r) / 2;
-        rangeUpdateUtil(2 * idx + 1, l, mid, ql, qr, delta);
-        rangeUpdateUtil(2 * idx + 2, mid + 1, r, ql, qr, delta);
-        seg[idx] = min(seg[2 * idx + 1], seg[2 * idx + 2]);
+        if (qlow > high || qhigh < low) {
+            // no overlap
+            return INT_MAX;
+        }
+        int mid = low + (high - low) / 2;
+        int left = rangeMinQuery(segmentTree, qlow, qhigh, low, mid, 2*position + 1); // left subtree
+        int right = rangeMinQuery(segmentTree, qlow, qhigh, mid + 1, high, 2*position + 2); // right subtree
+        return min(left, right);
     }
+    void minimumRangeQuery(vector<int>& nums, vector<vector<int>>& queries) {
+        int n = (int) nums.size();
+        int segmentTreeSize = 4 * n;
+        vector<int> segmentTree(segmentTreeSize);
 
-    int query(int ql, int qr) {
-        return queryUtil(0, 0, n - 1, ql, qr);
-    }
+        // construct the segment tree
+        buildSegmentTree(nums, segmentTree, 0, n - 1, 0);
 
-    int queryUtil(int idx, int l, int r, int ql, int qr) {
-        if (ql <= l && qr >= r) return seg[idx];
-        if (qr < l || ql > r) return INT_MAX;
-        int mid = (l + r) / 2;
-        return min(queryUtil(2 * idx + 1, l, mid, ql, qr),
-                   queryUtil(2 * idx + 2, mid + 1, r, ql, qr));
+        // query in (logn)
+        for (auto query : queries) {
+            int low = query[0];
+            int high = query[1];
+            int result = rangeMinQuery(segmentTree, low, high, 0, n - 1, 0);
+            cout << "Min in range [" << low << ", " << high << "] is: " << result << endl;
+        }
     }
 };
+
+int main() {
+    vector<int> nums = {-1, 0, 2, 3, 4, 35, 99};
+    vector<vector<int>> queries = {{0, 3},{4, 6}};
+    Solution obj;
+    obj.minimumRangeQuery(nums, queries);
+    return 0;
+}
