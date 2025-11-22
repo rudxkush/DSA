@@ -3,52 +3,46 @@
 */
 #include <iostream>
 #include <vector>
-#include <cmath>
 using namespace std;
 
-class SparseTableRMQ {
-public:
-    vector<vector<int>> st;   // stores indices of minima
-    vector<int> arr;
-    int n, maxLog;
-
-    SparseTableRMQ(vector<int>& input) {
-        arr = input;
-        n = (int)arr.size();
-        maxLog = log2(n);
-        st.assign(n, vector<int>(maxLog + 1));
-        build();
-    }
-
-    void build() {
-        for (int i = 0; i < n; i++) st[i][0] = i;
-
-        for (int j = 1; (1 << j) <= n; j++) {
-            for (int i = 0; i + (1 << j) - 1 < n; i++) {
-                int left = st[i][j - 1];
-                int right = st[i + (1 << (j - 1))][j - 1];
-                st[i][j] = (arr[left] < arr[right]) ? left : right;
-            }
-        }
-    }
-
-    int query(int l, int r) {
-        int len = r - l + 1;
-        int k = log2(len);
-        int left = st[l][k];
-        int right = st[r - (1 << k) + 1][k];
-        return min(arr[left], arr[right]);
-    }
-};
-
 int main() {
-    vector<int> input = {2, 5, 3, 6, 4, 1, -1, 3, 4, 2};
-    SparseTableRMQ rmq(input);
-
-    for (int i = 0; i < (int)input.size(); i++) {
-        for (int j = i; j < (int)input.size(); j++) {
-            cout << rmq.query(i, j) << " ";
-        }
-        cout << endl;
+    cout << "Enter size of the input array: ";
+    int n;
+    cin >> n;
+    vector<int> nums(n);
+    for (int i = 0; i < n; i++) {
+        cin >> nums[i];
     }
+    vector<vector<int>> queries = {{3, 5}, {3, 6}, {0, 5}, {0, 3}}; // Q -> {[start end], .....}
+
+    // building sparse table
+    vector<vector<int>> sparseTable(n, vector<int>(log2(n) + 1, INT_MAX));
+    // pre-processing step
+    for (int i = 0; i < n; i++) {
+        sparseTable[i][0] = nums[i]; // for a single element, length = 2^0 = 1
+    }
+    for (int j = 1;  j <= log2(n); j++) { // for each length represented in the power of 2s
+        for (int i = 0; i + (1 << j) - 1 < n; i++) {    // with their respective start index
+            // we calculate the minimum element
+            sparseTable[i][j] = min(sparseTable[i][j - 1], sparseTable[i + (1 << (j - 1))][j - 1]);
+        }
+    }
+
+    // print sparse matrix in O(nlogn)
+    // for (auto i : sparseTable) {
+    //     for (auto ij : i) {
+    //         cout << ij << " ";
+    //     }
+    //     cout << endl;
+    // }
+
+    // query in O(1)
+    for (auto query : queries) {
+        int L = query[0];
+        int R = query[1];
+        int len = log2(R - L + 1);
+        int answer = min(sparseTable[L][len], sparseTable[R - (1 << len) + 1][len]);
+        cout << answer << endl;
+    }
+    return 0;
 }
