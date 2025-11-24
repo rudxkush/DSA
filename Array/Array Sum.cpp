@@ -1,3 +1,6 @@
+/*
+    Author : rudxkush
+*/
 vector<int> Solution::addArrays(vector<int> &A, vector<int> &B) {
     int size_of_A = (int) A.size();
     int size_of_B = (int) B.size();
