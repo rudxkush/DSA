@@ -1,47 +1,45 @@
-#include <iostream>
-using namespace std;
-
-int countSpecialElements(vector<int>& A) {
-    int n = (int) A.size();
-    int odd = 0, even = 0;
-    int leftOdd[n], rightOdd[n];
-    int leftEven[n], rightEven[n];
-    for(int i = 0;i < n; i++){
-        leftOdd[i] = odd;
-        leftEven[i] = even;
-        if(i%2 == 0)
-            even += A[i];
-        else
-            odd += A[i];
-    }
-    odd = 0;
-    even = 0;
-    for(int i = n-1; i >= 0; i--){
-        rightOdd[i] = odd;
-        rightEven[i] = even;
-        if(i%2 == 0)
-            even += A[i];
-        else
-            odd += A[i];
-    }
-    // for (int i = 0; i < n; i++) {   cout << leftOdd[i] << " ";  } cout << endl;
-    // for (int i = 0; i < n; i++) {   cout << leftEven[i] << " ";  } cout << endl;
-    // for (int i = 0; i < n; i++) {   cout << rightEven[i] << " ";  } cout << endl;
-    // for (int i = 0; i < n; i++) {   cout << rightOdd[i] << " ";  } cout << endl;
-    int ans = 0;
-    for(int i = 0; i < n; i++){
-        if(leftOdd[i] + rightEven[i] == leftEven[i] + rightOdd[i]){
-            // cout << leftOdd[i] << ", " << rightEven[i] << " ==  " << leftEven[i] << ", " << rightOdd[i] << endl;
-            ans++;
+/*
+    Author : rudxkush
+*/
+int Solution::solve(vector<int> &nums) {
+    int n = (int) nums.size();
+    // Pre-compute prefixOddSum, prefixEvenSum
+    // suffixOddSum, suffixEvenSum from both the sides
+    vector<int> leftOddSum(n), leftEvenSum(n);
+    vector<int> rightOddSum(n), rightEvenSum(n);
+    
+    // Compute left side swifted by one index
+    long long runningOddSum = 0, runningEvenSum = 0;
+    for(int i = 0; i < n; i++) {
+        leftEvenSum[i] = runningEvenSum;
+        leftOddSum[i] = runningOddSum;
+        if(i%2 == 0) { // Even index!
+            runningEvenSum += nums[i];
+        } else {
+            runningOddSum  += nums[i];
         }
     }
-    return ans;
-}
-
-int main() {
-    vector<int> nums = {2, 1, 6, 4};
-    countSpecialElements(nums);
-    return 0;
+    
+    // Compute right side swifted by one index
+    runningEvenSum = 0, runningOddSum = 0;
+    for(int i = n - 1; i >= 0; i--) {
+        rightEvenSum[i] = runningEvenSum;
+        rightOddSum[i] = runningOddSum;
+        if(i%2 == 0) { // Even index!
+            runningEvenSum += nums[i];
+        } else {
+            runningOddSum  += nums[i];
+        }
+    }
+    
+    int specialElements = 0;
+    for(int i = 0; i < n; i++) {
+        // As the even and odd indices interchange!
+        if(leftEvenSum[i] + rightOddSum[i] == leftOddSum[i] + rightEvenSum[i]) {
+            specialElements++;
+        }
+    }
+    return specialElements;
 }
 /*
         nums = [2, 1, 6, 4] 
