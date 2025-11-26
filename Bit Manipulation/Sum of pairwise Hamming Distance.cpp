@@ -1,3 +1,7 @@
+/*
+    Author : rudxkush
+*/
+
 int bruteSolution::hammingDistance(const vector<int> &A) {
     int n = A.size();
     long long ans = 0;
@@ -16,9 +20,7 @@ int bruteSolution::hammingDistance(const vector<int> &A) {
 
     return ans % 1000000007;
 }
-/*
-    Author : rudxkush
-*/
+/*------------------------------------------------------------*/
 const int MOD = 1e9+7;
 int optimalSolution::hammingDistance(const vector<int> &A) {
     int n = A.size();
@@ -36,6 +38,7 @@ int optimalSolution::hammingDistance(const vector<int> &A) {
 
     return ans;
 }
+
 /*
     2   ->    0010
     4   ->    0100
