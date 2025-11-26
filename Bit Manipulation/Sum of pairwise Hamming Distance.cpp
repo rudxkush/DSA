@@ -36,3 +36,11 @@ int optimalSolution::hammingDistance(const vector<int> &A) {
 
     return ans;
 }
+/*
+    2   ->    0010
+    4   ->    0100
+    6   ->    0110   
+            ------
+            (3 * 0 * 2) + (1 * 2 * 2) + (1 * 2 * 2) + (3 * 0 * 2) = 8
+            * 2 -> as the difference in bits would be from both numbers
+*/
