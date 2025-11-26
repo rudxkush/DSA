@@ -1,0 +1,21 @@
+# Author : rudxkush
+
+from math import sqrt
+class Solution:
+    def solve(self, A):
+        target = abs(A);
+        i = 0
+        runnningSum = 0
+        
+        i = int((sqrt(1 + 8*target) - 1) // 2)
+        runnningSum = i * (i + 1) // 2
+        
+        if runnningSum < target:
+            i += 1
+            runnningSum += i
+        
+        while (runnningSum - target) % 2 != 0:
+            i += 1  
+            runnningSum += i
+        
+        return i;
