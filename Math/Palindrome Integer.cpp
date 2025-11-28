@@ -1,8 +1,12 @@
+/*
+    Author : rudxkush
+*/
 int Solution::isPalindrome(int A) {
+    if(A < 0) return 0;
     string number = "";
     while(A) {
         int unit_digit = A%10;
-        number += to_string(unit_digit);
+        number += (unit_digit + '0');
         A /= 10;
     }
     string original = number;
