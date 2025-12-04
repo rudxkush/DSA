@@ -1,3 +1,6 @@
+/*
+    Author: rudxkush
+*/
 vector<int> Solution::powerfulDivisors(vector<int> &nums) {
     int sieve_limit = INT_MIN;
     for (int num : nums) sieve_limit = max(sieve_limit, num);
