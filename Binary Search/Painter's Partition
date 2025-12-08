@@ -1,0 +1,43 @@
+long long mod = 10000003;
+
+long long getPainterCount(const vector<int>& lengths, long long timeTaken, long long timeThreshold) {
+    long long currLength = 0;
+    long long painters = 1;
+    for (size_t i = 0; i < lengths.size(); ++i) {
+        long long work = (long long)timeTaken * (long long)lengths[i];
+        if (currLength + work > timeThreshold) {
+            currLength = 0;
+            painters++;
+        }
+        currLength += work;
+    }
+    return painters;
+}
+
+int Solution::paint(int K, int timeTaken, vector<int> &lengths) {
+    if (lengths.empty()) return 0;
+    long long start = lengths[0];
+    long long end = 0;
+    long long ans = 0;
+
+    for (int length : lengths) {
+        end += (long long) length;
+        if (length > start) start = length;
+    }
+
+    start = start * (long long) timeTaken;
+    end = end * (long long) timeTaken;
+
+    while (start <= end) {
+        long long mid = start + (end - start) / 2;
+
+        if (getPainterCount(lengths, (long long)timeTaken, mid) <= (long long)K) {
+            ans = mid;
+            end = mid - 1;
+        } else {
+            start = mid + 1;
+        }
+    }
+
+    return (int)(ans % mod);
+}
