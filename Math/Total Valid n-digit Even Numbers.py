@@ -11,11 +11,17 @@ def rec(n, is_even):
         return 5 * rec(n - 1, True) + 4 * rec(n - 1, False)
 
 
+# Count n-digit even numbers, no leading zero, 
+# no two consecutive digits equal.
 def main():
     n = int(input("Enter the digit number: "))
-    altFactor = -1 ** n # As the value alternates!
-    ans = rec(n, 0) + altFactor
-    print(ans) 
+    altFactor = (-1) ** n # As the value alternates!
+    EvnCount = rec(n, 0) + altFactor 
+    print('\n')
+    print('Total valid n digit even numbers: {}'.format(EvnCount))
+    totalOddEvn = 9 ** n
+    oddCount = totalOddEvn - EvnCount
+    print('Total valid n digit odd numbers: {}'.format(oddCount))
 
 
 if __name__ == '__main__':
